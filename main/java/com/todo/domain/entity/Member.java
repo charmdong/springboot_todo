@@ -26,9 +26,6 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private final List<Todo> todoList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private final List<Comment> commentList = new ArrayList<>();
-
     // Constructor Method
     public static Member createMember(MemberRequest request) {
         Member member = new Member();

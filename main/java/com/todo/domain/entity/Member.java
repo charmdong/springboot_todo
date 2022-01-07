@@ -1,7 +1,9 @@
 package com.todo.domain.entity;
 
 import com.todo.dto.MemberRequest;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -10,7 +12,8 @@ import java.util.List;
 
 @Entity
 @Getter
-public class Member {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Member extends BaseEntity {
 
     @Id
     @Column(name = "member_id")
@@ -27,7 +30,7 @@ public class Member {
     private final List<Comment> commentList = new ArrayList<>();
 
     // Constructor Method
-    public Member createMember(MemberRequest request) {
+    public static Member createMember(MemberRequest request) {
         Member member = new Member();
 
         member.id = request.getId();

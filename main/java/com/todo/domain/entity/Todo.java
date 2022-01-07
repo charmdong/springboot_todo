@@ -1,7 +1,9 @@
 package com.todo.domain.entity;
 
 import com.todo.dto.TodoRequest;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -11,11 +13,12 @@ import java.util.List;
 
 @Entity
 @Getter
-public class Todo {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Todo extends BaseEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "TODO_SEQ")
+    @Column(name = "todo_seq")
     private Long seq;
 
     private String content;
@@ -25,19 +28,21 @@ public class Todo {
     private Boolean completeYn;
 
     @ManyToOne
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @OneToMany(mappedBy = "todo")
     private final List<Comment> commentList = new ArrayList<>();
 
     // Constructor Method
-    public Todo createTodo(TodoRequest request) {
+    public static Todo createTodo(TodoRequest request) {
 
         Todo todo = new Todo();
 
         todo.content = request.getContent();
         todo.expireDate = request.getExpireDate();
         todo.member = request.getMember();
+        todo.completeYn = false;
 
         return todo;
     }
@@ -52,5 +57,10 @@ public class Todo {
         if(request.getExpireDate() != null) {
             this.expireDate = request.getExpireDate();
         }
+    }
+
+    public void changeCompleteYn (Boolean completeYn) {
+
+        this.completeYn = completeYn;
     }
 }

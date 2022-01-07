@@ -1,14 +1,17 @@
 package com.todo.domain.entity;
 
 import com.todo.dto.CommentRequest;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-public class Comment {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Comment extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -18,13 +21,15 @@ public class Comment {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "todo_seq")
     private Todo todo;
 
     // Constructor Method
-    public Comment createComment(CommentRequest request) {
+    public static Comment createComment(CommentRequest request) {
 
         Comment comment = new Comment();
 

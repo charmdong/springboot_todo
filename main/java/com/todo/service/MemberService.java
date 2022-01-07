@@ -5,8 +5,10 @@ import com.todo.domain.repository.MemberRepository;
 import com.todo.dto.MemberRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MemberService {
 
@@ -20,6 +22,7 @@ public class MemberService {
         return member.getId();
     }
 
+    @Transactional(readOnly = true)
     public Member findOne(String id) {
 
         return memberRepository.findOne(id);

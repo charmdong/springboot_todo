@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
@@ -19,6 +21,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 class TodoServiceTest {
+
+    @PersistenceContext
+    EntityManager em;
 
     @Autowired
     MemberService memberService;
@@ -54,5 +59,30 @@ class TodoServiceTest {
 
         String id = memberService.insert(memberRequest);
         return memberService.findOne(id);
+    }
+
+    @Test
+    @DisplayName("Todo 수정 테스트")
+    public void updateTodoTest() throws Exception {
+        // given
+        TodoRequest todoRequest = new TodoRequest();
+
+        todoRequest.setContent("hello world");
+        todoRequest.setExpireDate(LocalDateTime.now());
+        todoRequest.setMember(insertMember());
+
+        Long seq = todoService.insert(todoRequest);
+        Todo todo = todoService.findOne(seq);
+
+        // when
+        TodoRequest todoRequest1 = new TodoRequest();
+
+        todoRequest1.setContent("stop the world");
+        todo.changeTodoInfo(todoRequest1);
+
+        Todo todo1 = todoService.findOne(seq);
+
+        // then
+        assertThat(todo1.getContent()).isEqualTo("stop the world");
     }
 }

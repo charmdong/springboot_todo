@@ -1,5 +1,6 @@
 package com.todo.service;
 
+import com.todo.domain.entity.Member;
 import com.todo.domain.entity.Todo;
 import com.todo.domain.repository.MemberRepository;
 import com.todo.domain.repository.TodoRepository;
@@ -18,9 +19,12 @@ public class TodoService {
     private final TodoRepository todoRepository;
     private final MemberRepository memberRepository;
 
-    public Long insert(TodoRequest request) {
+    public Long insert(String id, TodoRequest request) {
 
+        Member member = memberRepository.findOne(id);
+        request.setMember(member);
         Todo todo = Todo.createTodo(request);
+        member.insertTodoList(todo);
 
         todoRepository.insert(todo);
 
@@ -39,7 +43,11 @@ public class TodoService {
         return todoRepository.findOne(seq);
     }
 
-    public void delete(Long seq) {
+    public void delete(String id, Long seq) {
+
+        Member member = memberRepository.findOne(id);
+        Todo todo = todoRepository.findOne(seq);
+        member.removeTodoList(todo);
 
         todoRepository.delete(seq);
     }

@@ -44,4 +44,14 @@ public class Member extends BaseEntity {
             this.nickname = request.getNickname();
         }
     }
+
+    public void insertTodoList(Todo todo) {
+
+        this.todoList.add(todo);
+    }
+
+    public void removeTodoList(Todo todo) {
+
+        this.todoList.remove(todo);
+    }
 }

@@ -30,6 +30,7 @@ public class Comment extends BaseEntity {
 
         Comment comment = new Comment();
 
+        comment.todo = request.getTodo();
         comment.content = request.getContent();
 
         return comment;

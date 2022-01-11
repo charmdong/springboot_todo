@@ -65,4 +65,14 @@ public class Todo extends BaseEntity {
 
         this.completeYn = completeYn;
     }
+
+    public void insertCommentList(Comment comment) {
+
+        this.commentList.add(comment);
+    }
+
+    public void removeCommentList(Comment comment) {
+
+        this.commentList.remove(comment);
+    }
 }

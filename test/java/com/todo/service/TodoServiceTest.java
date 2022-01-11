@@ -39,14 +39,16 @@ class TodoServiceTest {
 
         todoRequest.setContent("hello world");
         todoRequest.setExpireDate(LocalDateTime.now());
-        todoRequest.setMember(insertMember());
+        Member member = insertMember();
+        todoRequest.setMember(member);
 
         // when
-        Long seq = todoService.insert(todoRequest);
+        Long seq = todoService.insert("member1", todoRequest);
         Todo todo = todoService.findOne(seq);
 
         // then
         assertThat(todo.getMember().getId()).isEqualTo("member1");
+        assertThat(member.getTodoList().size()).isEqualTo(1);
     }
 
     private Member insertMember() {
@@ -71,7 +73,7 @@ class TodoServiceTest {
         todoRequest.setExpireDate(LocalDateTime.now());
         todoRequest.setMember(insertMember());
 
-        Long seq = todoService.insert(todoRequest);
+        Long seq = todoService.insert("member1", todoRequest);
         Todo todo = todoService.findOne(seq);
 
         // when

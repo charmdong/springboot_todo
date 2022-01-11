@@ -28,6 +28,11 @@ public class CommentService {
         return comment.getSeq();
     }
 
+    public Comment findOne(Long seq) {
+
+        return commentRepository.findOne(seq);
+    }
+
     public void delete(Long todoSeq, Long commentSeq) {
 
         Todo todo = todoRepository.findOne(todoSeq);

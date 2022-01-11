@@ -2,7 +2,7 @@
 *.class
 
 # application.yml
-main/resources/application.yml
+**/application.yml
 
 # Log file
 *.log

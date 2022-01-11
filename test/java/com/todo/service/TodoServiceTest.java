@@ -85,4 +85,14 @@ class TodoServiceTest {
         // then
         assertThat(todo1.getContent()).isEqualTo("stop the world");
     }
+
+    @Test
+    @DisplayName("Comment 생성 테스트")
+    public void createCommentTest() throws Exception {
+        // given
+
+        // when
+
+        // then
+    }
 }

@@ -15,6 +15,12 @@ public class MemberApiController {
 
     private final MemberService memberService;
 
+    @GetMapping
+    public String hello(@RequestParam("param") String param) {
+
+        return "hello " + param;
+    }
+
     @PostMapping("")
     public ResponseEntity join(MemberRequest request) {
 

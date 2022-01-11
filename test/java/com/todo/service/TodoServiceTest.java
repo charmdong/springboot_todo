@@ -1,7 +1,9 @@
 package com.todo.service;
 
+import com.todo.domain.entity.Comment;
 import com.todo.domain.entity.Member;
 import com.todo.domain.entity.Todo;
+import com.todo.dto.CommentRequest;
 import com.todo.dto.MemberRequest;
 import com.todo.dto.TodoRequest;
 import org.assertj.core.api.Assertions;
@@ -31,6 +33,9 @@ class TodoServiceTest {
     @Autowired
     TodoService todoService;
 
+    @Autowired
+    CommentService commentService;
+
     @Test
     @DisplayName("Todo 생성 테스트 by TodoService")
     public void createTodoTest() throws Exception {
@@ -39,7 +44,7 @@ class TodoServiceTest {
 
         todoRequest.setContent("hello world");
         todoRequest.setExpireDate(LocalDateTime.now());
-        Member member = insertMember();
+        Member member = getMember();
         todoRequest.setMember(member);
 
         // when
@@ -51,7 +56,7 @@ class TodoServiceTest {
         assertThat(member.getTodoList().size()).isEqualTo(1);
     }
 
-    private Member insertMember() {
+    private Member getMember() {
 
         MemberRequest memberRequest = new MemberRequest();
 
@@ -63,6 +68,19 @@ class TodoServiceTest {
         return memberService.findOne(id);
     }
 
+    private Todo getTodo() {
+
+        Member member = getMember();
+
+        TodoRequest todoRequest = new TodoRequest();
+
+        todoRequest.setContent("hello world");
+        todoRequest.setExpireDate(LocalDateTime.now());
+        todoRequest.setMember(member);
+
+        return todoService.findOne(todoService.insert(member.getId(), todoRequest));
+    }
+
     @Test
     @DisplayName("Todo 수정 테스트")
     public void updateTodoTest() throws Exception {
@@ -71,7 +89,7 @@ class TodoServiceTest {
 
         todoRequest.setContent("hello world");
         todoRequest.setExpireDate(LocalDateTime.now());
-        todoRequest.setMember(insertMember());
+        todoRequest.setMember(getMember());
 
         Long seq = todoService.insert("member1", todoRequest);
         Todo todo = todoService.findOne(seq);
@@ -92,9 +110,19 @@ class TodoServiceTest {
     @DisplayName("Comment 생성 테스트")
     public void createCommentTest() throws Exception {
         // given
+        Todo todo = getTodo();
+
+        CommentRequest commentRequest = new CommentRequest();
+        commentRequest.setContent("this is a comment");
+        commentRequest.setTodo(todo);
 
         // when
 
+        Long commentSeq = commentService.insert(todo.getSeq(), commentRequest);
+        Comment comment = commentService.findOne(commentSeq);
+
         // then
+        assertThat(comment.getContent()).isEqualTo("this is a comment");
+        assertThat(todo.getCommentList().size()).isEqualTo(1);
     }
 }

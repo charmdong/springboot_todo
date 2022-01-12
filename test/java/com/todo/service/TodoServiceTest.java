@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -100,9 +101,11 @@ class TodoServiceTest {
         todoRequest1.setContent("stop the world");
         todo.changeTodoInfo(todoRequest1);
 
+        List<Todo> todoList = todoService.findTodos("member1");
         Todo todo1 = todoService.findOne(seq);
 
         // then
+        assertThat(todoList.size()).isEqualTo(1);
         assertThat(todo1.getContent()).isEqualTo("stop the world");
     }
 
@@ -120,6 +123,7 @@ class TodoServiceTest {
 
         Long commentSeq = commentService.insert(todo.getSeq(), commentRequest);
         Comment comment = commentService.findOne(commentSeq);
+        Todo findTodo = todoService.findOne(todo.getSeq());
 
         // then
         assertThat(comment.getContent()).isEqualTo("this is a comment");

@@ -43,6 +43,14 @@ public class TodoService {
         return todoRepository.findOne(seq);
     }
 
+    public Todo update(Long seq, TodoRequest request) {
+
+        Todo todo = todoRepository.findOne(seq);
+        todo.changeTodoInfo(request);
+
+        return todo;
+    }
+
     public void delete(String id, Long seq) {
 
         Member member = memberRepository.findOne(id);

@@ -43,4 +43,7 @@ public class Comment extends BaseEntity {
             this.content = request.getContent();
         }
     }
+
+
+
 }

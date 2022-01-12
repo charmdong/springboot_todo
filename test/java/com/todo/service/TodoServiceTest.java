@@ -82,6 +82,17 @@ class TodoServiceTest {
         return todoService.findOne(todoService.insert(member.getId(), todoRequest));
     }
 
+    private Comment getComment() {
+
+        Todo todo = getTodo();
+
+        CommentRequest request = new CommentRequest();
+        request.setContent( "this is a comment" );
+        request.setTodo( todo );
+
+        return commentService.findOne( commentService.insert( todo.getSeq(), request ) );
+    }
+
     @Test
     @DisplayName("Todo 수정 테스트")
     public void updateTodoTest() throws Exception {
@@ -90,7 +101,8 @@ class TodoServiceTest {
 
         todoRequest.setContent("hello world");
         todoRequest.setExpireDate(LocalDateTime.now());
-        todoRequest.setMember(getMember());
+        Member member = getMember();
+        todoRequest.setMember(member);
 
         Long seq = todoService.insert("member1", todoRequest);
         Todo todo = todoService.findOne(seq);
@@ -99,10 +111,10 @@ class TodoServiceTest {
         TodoRequest todoRequest1 = new TodoRequest();
 
         todoRequest1.setContent("stop the world");
-        todo.changeTodoInfo(todoRequest1);
+        Todo update = todoService.update( todo.getSeq(), todoRequest1 );
 
-        List<Todo> todoList = todoService.findTodos("member1");
-        Todo todo1 = todoService.findOne(seq);
+        List<Todo> todoList = member.getTodoList();
+        Todo todo1 = todoList.get( 0 );
 
         // then
         assertThat(todoList.size()).isEqualTo(1);
@@ -128,5 +140,26 @@ class TodoServiceTest {
         // then
         assertThat(comment.getContent()).isEqualTo("this is a comment");
         assertThat(todo.getCommentList().size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName( "Comment 수정 테스트" )
+    public void updateCommentTest() throws Exception {
+        // given
+        Comment comment = getComment();
+
+        CommentRequest request = new CommentRequest();
+        request.setContent( "test" );
+
+        // when
+        Todo todo = comment.getTodo();
+        commentService.update( comment.getSeq(), request );
+
+        List<Comment> commentList = todo.getCommentList();
+        Comment findComment = commentList.get( 0 );
+
+        // then
+        assertThat( findComment ).isSameAs( comment );
+        assertThat( findComment.getContent() ).isEqualTo( comment.getContent() );
     }
 }

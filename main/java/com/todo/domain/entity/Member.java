@@ -23,7 +23,7 @@ public class Member extends BaseEntity {
 
     private String nickname;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private final List<Todo> todoList = new ArrayList<>();
 
     // Constructor Method

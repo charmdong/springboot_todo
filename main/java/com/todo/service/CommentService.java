@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -28,9 +30,18 @@ public class CommentService {
         return comment.getSeq();
     }
 
+    @Transactional(readOnly = true)
     public Comment findOne(Long seq) {
 
         return commentRepository.findOne(seq);
+    }
+
+    public Comment update(Long commentSeq, CommentRequest request) {
+
+        Comment comment = commentRepository.findOne( commentSeq );
+        comment.changeCommentInfo( request );
+
+        return comment;
     }
 
     public void delete(Long todoSeq, Long commentSeq) {

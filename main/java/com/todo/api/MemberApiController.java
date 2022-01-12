@@ -21,7 +21,7 @@ public class MemberApiController {
         return "hello " + param;
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity join(MemberRequest request) {
 
         String id = memberService.insert(request);

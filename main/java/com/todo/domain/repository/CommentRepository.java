@@ -13,20 +13,20 @@ public class CommentRepository {
 
     private final EntityManager em;
 
-    public void insert(Comment comment) {
+    public void insert (Comment comment) {
 
-        em.persist(comment);
+        em.persist( comment );
     }
 
-    public Comment findOne(Long seq) {
+    public Comment findOne (Long seq) {
 
-        return em.find(Comment.class, seq);
+        return em.find( Comment.class, seq );
     }
 
-    public void delete(Long seq) {
+    public void delete (Long seq) {
 
-        Comment comment = em.find(Comment.class, seq);
-        em.remove(comment);
+        Comment comment = em.find( Comment.class, seq );
+        em.remove( comment );
     }
 
 

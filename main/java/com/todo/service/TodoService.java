@@ -4,12 +4,15 @@ import com.todo.domain.entity.Member;
 import com.todo.domain.entity.Todo;
 import com.todo.domain.repository.MemberRepository;
 import com.todo.domain.repository.TodoRepository;
+import com.todo.dto.TodoDto;
 import com.todo.dto.TodoRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = false)
@@ -32,15 +35,19 @@ public class TodoService {
     }
 
     @Transactional(readOnly = true)
-    public List<Todo> findTodos(String id) {
+    public List<TodoDto> findTodos(String id) {
 
-        return todoRepository.findTodos(memberRepository.findOne(id));
+        return todoRepository
+                .findTodos( memberRepository.findOne( id ) )
+                .stream()
+                .map( TodoDto::new )
+                .collect( Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public Todo findOne(Long seq) {
+    public TodoDto findOne(Long seq) {
 
-        return todoRepository.findOne(seq);
+        return new TodoDto(todoRepository.findOne(seq));
     }
 
     public Todo update(Long seq, TodoRequest request) {

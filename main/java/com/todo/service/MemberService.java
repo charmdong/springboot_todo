@@ -2,6 +2,7 @@ package com.todo.service;
 
 import com.todo.domain.entity.Member;
 import com.todo.domain.repository.MemberRepository;
+import com.todo.dto.MemberDto;
 import com.todo.dto.MemberRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,9 +24,9 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Member findOne(String id) {
+    public MemberDto findOne(String id) {
 
-        return memberRepository.findOne(id);
+        return new MemberDto(memberRepository.findOne(id));
     }
 
     public void delete(String id) {

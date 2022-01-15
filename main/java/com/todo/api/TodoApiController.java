@@ -2,7 +2,9 @@ package com.todo.api;
 
 import com.todo.domain.entity.Comment;
 import com.todo.domain.entity.Todo;
+import com.todo.dto.CommentDto;
 import com.todo.dto.CommentRequest;
+import com.todo.dto.TodoDto;
 import com.todo.dto.TodoRequest;
 import com.todo.service.CommentService;
 import com.todo.service.TodoService;
@@ -24,7 +26,7 @@ public class TodoApiController {
     @GetMapping("/{id}")
     public ResponseEntity findTodoList (@PathVariable("id") String id) {
 
-        List<Todo> todoList = todoService.findTodos( id );
+        List<TodoDto> todoList = todoService.findTodos( id );
 
         return new ResponseEntity( todoList, HttpStatus.OK );
     }
@@ -32,7 +34,7 @@ public class TodoApiController {
     @GetMapping("/{seq}")
     public ResponseEntity findTodo (@PathVariable("seq") Long seq) {
 
-        Todo todo = todoService.findOne( seq );
+        TodoDto todo = todoService.findOne( seq );
 
         return new ResponseEntity( todo, HttpStatus.OK );
     }
@@ -61,15 +63,6 @@ public class TodoApiController {
 
     // comment
 
-    @GetMapping("/{seq}/comments")
-    public ResponseEntity findCommentList (@PathVariable("seq") Long seq) {
-
-        Todo todo = todoService.findOne( seq );
-        List<Comment> commentList = todo.getCommentList();
-
-        return new ResponseEntity( commentList, HttpStatus.OK );
-    }
-
     @PostMapping("/{seq}/comments")
     public ResponseEntity addComment (@PathVariable("seq") Long seq, CommentRequest request) {
 
@@ -81,7 +74,7 @@ public class TodoApiController {
     @PatchMapping("/comments/{commentSeq}")
     public ResponseEntity updateComment (@PathVariable("seq") Long seq, @PathVariable("commentSeq") Long commentSeq, CommentRequest request) {
 
-        Comment comment = commentService.update( commentSeq, request );
+        CommentDto comment = commentService.update( commentSeq, request );
 
         return new ResponseEntity( comment, HttpStatus.OK );
     }

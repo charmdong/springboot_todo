@@ -2,6 +2,7 @@ package com.todo.domain.repository;
 
 import com.todo.domain.entity.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

@@ -1,6 +1,7 @@
 package com.todo.api;
 
 import com.todo.domain.entity.Member;
+import com.todo.dto.MemberDto;
 import com.todo.dto.MemberRequest;
 import com.todo.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class MemberApiController {
     @GetMapping("/{id}")
     public ResponseEntity findMember (@PathVariable("id") String id) {
 
-        Member findMember = memberService.findOne( id );
+        MemberDto findMember = memberService.findOne( id );
 
         return new ResponseEntity( findMember, HttpStatus.OK );
     }

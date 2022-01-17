@@ -11,6 +11,11 @@ public class MemberDto {
 
     public MemberDto() {}
 
+    public MemberDto (String id, String nickname) {
+        this.id = id;
+        this.nickname = nickname;
+    }
+
     public MemberDto(Member member) {
         id = member.getId();
         nickname = member.getNickname();

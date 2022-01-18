@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -25,7 +27,13 @@ class MemberServiceTest {
     private MemberService memberService;
 
     @Autowired
-    private MemberJpaRepository repository;
+    private MemberJpaRepository memberJpaRepository;
+
+    @Autowired
+    MemberRepository repository;
+
+    @PersistenceContext
+    EntityManager em;
 
     @Test
     @DisplayName("Member 생성 테스트")
@@ -55,9 +63,13 @@ class MemberServiceTest {
         memberRequest.setNickname("hello");
 
         Member member = Member.createMember( memberRequest );
+//        em.persist( member ); // 영속성 컨텍스트 1차 캐시에 등록
+//        System.out.println( "member = " + member );
 
-        // when
+        memberJpaRepository.save( member );
+        System.out.println( "member = " + member );
 
-        // then
+        Member find = memberJpaRepository.findById( "member1" ).get(); // 영속성 컨텍스트 1차 캐시에서 가져옴
+        System.out.println( "find = " + find );
     }
 }

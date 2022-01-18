@@ -62,25 +62,4 @@ class TodoRepositoryTest {
         return member;
     }
 
-    @Test
-    public void persistenceContextTest() throws Exception {
-        // given
-        TodoRequest todoRequest = new TodoRequest();
-
-        todoRequest.setContent("hello world");
-        todoRequest.setExpireDate(LocalDateTime.now());
-        todoRequest.setMember(createMember());
-
-        Todo todo = Todo.createTodo(todoRequest);
-
-        // when
-        todoRepository.insert(todo);
-        System.out.println( "todo = " + todo );
-
-        Todo findTodo = todoRepository.findOne( todo.getSeq() );
-        System.out.println( "findTodo = " + findTodo );
-
-        System.out.println(todo == findTodo);
-        // then
-    }
 }

@@ -1,6 +1,5 @@
 package com.todo.api;
 
-import com.todo.domain.entity.Member;
 import com.todo.dto.MemberDto;
 import com.todo.dto.MemberRequest;
 import com.todo.service.MemberService;

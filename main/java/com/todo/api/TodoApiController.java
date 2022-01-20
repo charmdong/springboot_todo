@@ -1,7 +1,5 @@
 package com.todo.api;
 
-import com.todo.domain.entity.Comment;
-import com.todo.domain.entity.Todo;
 import com.todo.dto.CommentDto;
 import com.todo.dto.CommentRequest;
 import com.todo.dto.TodoDto;

@@ -15,4 +15,12 @@ public class TodoRequest {
     private String content;
     private LocalDateTime expireDate;
     private Member member;
+
+    public TodoRequest () {}
+
+    public TodoRequest (String content, LocalDateTime expireDate, Member member) {
+        this.content = content;
+        this.expireDate = expireDate;
+        this.member = member;
+    }
 }

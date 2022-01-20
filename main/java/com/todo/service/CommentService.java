@@ -2,31 +2,29 @@ package com.todo.service;
 
 import com.todo.domain.entity.Comment;
 import com.todo.domain.entity.Todo;
-import com.todo.domain.repository.CommentRepository;
-import com.todo.domain.repository.TodoRepository;
+import com.todo.domain.repository.CommentJpaRepository;
+import com.todo.domain.repository.TodoJpaRepository;
 import com.todo.dto.CommentDto;
 import com.todo.dto.CommentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class CommentService {
 
-    private final TodoRepository todoRepository;
-    private final CommentRepository commentRepository;
+    private final TodoJpaRepository todoRepository;
+    private final CommentJpaRepository commentRepository;
 
     public Long insert (Long todoSeq, CommentRequest request) {
 
-        Todo todo = todoRepository.findOne( todoSeq );
+        Todo todo = todoRepository.findBySeq( todoSeq );
         request.setTodo( todo );
         Comment comment = Comment.createComment( request );
         todo.insertCommentList( comment );
-        commentRepository.insert( comment );
+        commentRepository.save( comment );
 
         return comment.getSeq();
     }
@@ -34,12 +32,12 @@ public class CommentService {
     @Transactional(readOnly = true)
     public CommentDto findOne (Long seq) {
 
-        return new CommentDto( commentRepository.findOne( seq ) );
+        return new CommentDto( commentRepository.findBySeq( seq ) );
     }
 
     public CommentDto update (Long commentSeq, CommentRequest request) {
 
-        Comment comment = commentRepository.findOne( commentSeq );
+        Comment comment = commentRepository.findBySeq( commentSeq );
         comment.changeCommentInfo( request );
 
         return new CommentDto(comment);
@@ -47,10 +45,10 @@ public class CommentService {
 
     public void delete (Long todoSeq, Long commentSeq) {
 
-        Todo todo = todoRepository.findOne( todoSeq );
-        Comment comment = commentRepository.findOne( commentSeq );
+        Todo todo = todoRepository.findBySeq( todoSeq );
+        Comment comment = commentRepository.findBySeq( commentSeq );
         todo.removeCommentList( comment );
 
-        commentRepository.delete( commentSeq );
+        commentRepository.deleteBySeq( commentSeq );
     }
 }

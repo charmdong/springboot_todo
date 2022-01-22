@@ -126,7 +126,7 @@ class TodoJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("Page")
+    @DisplayName("Paging Test")
     public void pagingTest () throws Exception {
         // given
 

@@ -7,6 +7,9 @@ import com.todo.domain.repository.TodoJpaRepository;
 import com.todo.dto.TodoDto;
 import com.todo.dto.TodoRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,13 +37,13 @@ public class TodoService {
     }
 
     @Transactional(readOnly = true)
-    public List<TodoDto> findTodos (String id) {
+    public Page<TodoDto> findTodos (String id) {
 
-        return todoRepository
-                .findByMember( memberRepository.findById( id ).get() )
-                .stream()
-                .map( TodoDto::new )
-                .collect( Collectors.toList() );
+        PageRequest request = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "seq"));
+        Page<Todo> page = todoRepository.findByMember(memberRepository.findById( id ).get(), request);
+        Page<TodoDto> todoDtoPage = page.map(TodoDto::new);
+
+        return todoDtoPage;
     }
 
     @Transactional(readOnly = true)

@@ -7,6 +7,7 @@ import com.todo.dto.TodoRequest;
 import com.todo.service.CommentService;
 import com.todo.service.TodoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,39 +25,39 @@ public class TodoApiController {
     @GetMapping("/{id}")
     public ResponseEntity findTodoList (@PathVariable("id") String id) {
 
-        List<TodoDto> todoList = todoService.findTodos( id );
+        Page<TodoDto> todoList = todoService.findTodos(id);
 
-        return new ResponseEntity( todoList, HttpStatus.OK );
+        return new ResponseEntity(todoList, HttpStatus.OK);
     }
 
     @GetMapping("/{seq}")
     public ResponseEntity findTodo (@PathVariable("seq") Long seq) {
 
-        TodoDto todo = todoService.findOne( seq );
+        TodoDto todo = todoService.findOne(seq);
 
-        return new ResponseEntity( todo, HttpStatus.OK );
+        return new ResponseEntity(todo, HttpStatus.OK);
     }
 
     @PostMapping("/{id}")
     public ResponseEntity addTodo (@PathVariable("id") String id, TodoRequest request) {
 
-        Long seq = todoService.insert( id, request );
+        Long seq = todoService.insert(id, request);
 
-        return new ResponseEntity( seq, HttpStatus.OK );
+        return new ResponseEntity(seq, HttpStatus.OK);
     }
 
     @PatchMapping("/{seq}")
     public ResponseEntity updateTodo (@PathVariable("seq") Long seq, TodoRequest request) {
 
-        return new ResponseEntity( todoService.update( seq, request ), HttpStatus.OK );
+        return new ResponseEntity(todoService.update(seq, request), HttpStatus.OK);
     }
 
     @DeleteMapping("/{seq}")
     public ResponseEntity deleteTodo (@PathVariable("seq") Long seq, @RequestParam("id") String id) {
 
-        todoService.delete( id, seq );
+        todoService.delete(id, seq);
 
-        return new ResponseEntity( HttpStatus.OK );
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     // comment
@@ -64,24 +65,24 @@ public class TodoApiController {
     @PostMapping("/{seq}/comments")
     public ResponseEntity addComment (@PathVariable("seq") Long seq, CommentRequest request) {
 
-        Long commentSeq = commentService.insert( seq, request );
+        Long commentSeq = commentService.insert(seq, request);
 
-        return new ResponseEntity( commentSeq, HttpStatus.OK );
+        return new ResponseEntity(commentSeq, HttpStatus.OK);
     }
 
     @PatchMapping("/comments/{commentSeq}")
     public ResponseEntity updateComment (@PathVariable("seq") Long seq, @PathVariable("commentSeq") Long commentSeq, CommentRequest request) {
 
-        CommentDto comment = commentService.update( commentSeq, request );
+        CommentDto comment = commentService.update(commentSeq, request);
 
-        return new ResponseEntity( comment, HttpStatus.OK );
+        return new ResponseEntity(comment, HttpStatus.OK);
     }
 
     @DeleteMapping("/{seq}/comments/{commentSeq}")
     public ResponseEntity deleteComment (@PathVariable("seq") Long seq, @PathVariable("commentSeq") Long commentSeq) {
 
-        commentService.delete( seq, commentSeq );
+        commentService.delete(seq, commentSeq);
 
-        return new ResponseEntity( HttpStatus.OK );
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

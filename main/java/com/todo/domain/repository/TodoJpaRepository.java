@@ -12,8 +12,6 @@ public interface TodoJpaRepository extends JpaRepository<Todo, Long> {
 
     Todo findBySeq(Long seq);
 
-    List<Todo> findByMember(Member member);
-
     Long deleteBySeq(Long seq);
 
     Page<Todo> findByMember(Member member, Pageable pageable);

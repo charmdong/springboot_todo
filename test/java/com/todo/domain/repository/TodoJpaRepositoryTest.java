@@ -97,21 +97,6 @@ class TodoJpaRepositoryTest {
     }
 
     @Test
-    @DisplayName("Member로 TODO 목록 조회하기")
-    public void findByMemberTest () throws Exception {
-        // given
-        Todo todo = createTodo("member1");
-        Member member = todo.getMember();
-
-        // when
-        List<Todo> todoList = repository.findByMember(member);
-
-        // then
-        assertThat(todoList.size()).isEqualTo(1);
-        assertThat(todoList.get(0).getContent()).isEqualTo("hello world");
-    }
-
-    @Test
     @DisplayName("delete Test")
     public void deleteTodoTest () throws Exception {
         // given

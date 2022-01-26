@@ -1,28 +1,16 @@
 package com.todo.domain.repository;
 
 import com.todo.domain.entity.Member;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.EntityManager;
+import java.util.List;
+import java.util.Optional;
 
-@Repository
-@RequiredArgsConstructor
-public class MemberRepository {
+public interface MemberRepository extends JpaRepository<Member, String>, MemberRepositoryCustom {
 
-    private final EntityManager em;
+    Optional<Member> findById(String id);
 
-    public void insert (Member member) {
-        em.persist(member);
-    }
+    List<Member> findByNickname(String nickname);
 
-    public Member findOne (String id) {
-        return em.find(Member.class, id);
-    }
-
-    public void delete (String id) {
-        Member member = findOne(id);
-        em.remove(member);
-    }
+    void deleteById(String id);
 }

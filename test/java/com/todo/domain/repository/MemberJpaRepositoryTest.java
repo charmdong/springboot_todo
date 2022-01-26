@@ -27,7 +27,7 @@ class MemberJpaRepositoryTest {
     EntityManager em;
 
     @Autowired
-    MemberJpaRepository repository;
+    MemberRepository repository;
 
     @Test
     @DisplayName( "Find member by nickname using Spring data jpa" )

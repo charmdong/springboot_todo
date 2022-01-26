@@ -1,6 +1,5 @@
 package com.todo.domain.entity;
 
-import com.todo.domain.repository.CommentRepository;
 import com.todo.dto.CommentRequest;
 import lombok.AccessLevel;
 import lombok.Getter;

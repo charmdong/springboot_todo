@@ -31,7 +31,7 @@ class TodoJpaRepositoryTest {
     TodoJpaRepository repository;
 
     @Autowired
-    MemberJpaRepository memberRepository;
+    MemberRepository memberRepository;
 
     @PersistenceContext
     EntityManager em;

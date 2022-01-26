@@ -2,7 +2,7 @@ package com.todo.service;
 
 import com.todo.domain.entity.Member;
 import com.todo.domain.entity.Todo;
-import com.todo.domain.repository.MemberJpaRepository;
+import com.todo.domain.repository.MemberRepository;
 import com.todo.domain.repository.TodoJpaRepository;
 import com.todo.dto.TodoDto;
 import com.todo.dto.TodoRequest;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TodoService {
 
     private final TodoJpaRepository todoRepository;
-    private final MemberJpaRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     public Long insert (String id, TodoRequest request) {
 

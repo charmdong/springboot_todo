@@ -1,11 +1,9 @@
 package com.todo.service;
 
 import com.todo.domain.entity.Member;
-import com.todo.domain.repository.MemberJpaRepository;
 import com.todo.domain.repository.MemberRepository;
 import com.todo.dto.MemberDto;
 import com.todo.dto.MemberRequest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -27,10 +23,7 @@ class MemberServiceTest {
     private MemberService memberService;
 
     @Autowired
-    private MemberJpaRepository memberJpaRepository;
-
-    @Autowired
-    MemberRepository repository;
+    private MemberRepository memberJpaRepository;
 
     @PersistenceContext
     EntityManager em;

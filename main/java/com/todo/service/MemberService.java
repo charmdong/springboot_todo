@@ -1,7 +1,7 @@
 package com.todo.service;
 
 import com.todo.domain.entity.Member;
-import com.todo.domain.repository.MemberJpaRepository;
+import com.todo.domain.repository.MemberRepository;
 import com.todo.dto.MemberDto;
 import com.todo.dto.MemberRequest;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final MemberJpaRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     public String insert (MemberRequest request) {
 
         Member member = Member.createMember( request );
-        memberRepository.save( member );
+        memberRepository.join( member );
 
         return member.getId();
     }

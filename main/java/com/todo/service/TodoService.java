@@ -3,7 +3,7 @@ package com.todo.service;
 import com.todo.domain.entity.Member;
 import com.todo.domain.entity.Todo;
 import com.todo.domain.repository.MemberRepository;
-import com.todo.domain.repository.TodoJpaRepository;
+import com.todo.domain.repository.TodoRepository;
 import com.todo.dto.TodoDto;
 import com.todo.dto.TodoRequest;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TodoService {
 
-    private final TodoJpaRepository todoRepository;
+    private final TodoRepository todoRepository;
     private final MemberRepository memberRepository;
 
     public Long insert (String id, TodoRequest request) {

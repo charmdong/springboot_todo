@@ -8,6 +8,7 @@ import com.todo.service.CommentService;
 import com.todo.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class TodoApiController {
     private final CommentService commentService;
 
     @GetMapping("/{id}")
-    public ResponseEntity findTodoList (@PathVariable("id") String id) {
+    public ResponseEntity findTodoList (String id) {
 
         Page<TodoDto> todoList = todoService.findTodos(id);
 

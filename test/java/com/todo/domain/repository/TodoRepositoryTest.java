@@ -4,7 +4,6 @@ import com.todo.domain.entity.Member;
 import com.todo.domain.entity.Todo;
 import com.todo.dto.MemberRequest;
 import com.todo.dto.TodoRequest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +17,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class TodoJpaRepositoryTest {
+class TodoRepositoryTest {
 
     @Autowired
-    TodoJpaRepository repository;
+    TodoRepository repository;
 
     @Autowired
     MemberRepository memberRepository;

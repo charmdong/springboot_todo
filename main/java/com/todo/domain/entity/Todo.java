@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.domain.Persistable;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -17,7 +18,7 @@ import java.util.stream.IntStream;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Todo extends BaseEntity {
+public class Todo extends BaseEntity implements Persistable<Long> {
 
     @Id
     @GeneratedValue
@@ -36,6 +37,16 @@ public class Todo extends BaseEntity {
 
     @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL)
     private final List<Comment> commentList = new ArrayList<>();
+
+    @Override
+    public Long getId () {
+        return seq;
+    }
+
+    @Override
+    public boolean isNew () {
+        return createDate == null;
+    }
 
     // Constructor Method
     public static Todo createTodo(TodoRequest request) {
@@ -76,4 +87,5 @@ public class Todo extends BaseEntity {
 
         this.commentList.remove(comment);
     }
+
 }

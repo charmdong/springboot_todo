@@ -18,7 +18,7 @@ public class MemberService {
     public String insert (MemberRequest request) {
 
         Member member = Member.createMember( request );
-        memberRepository.join( member );
+        memberRepository.save( member );
 
         return member.getId();
     }

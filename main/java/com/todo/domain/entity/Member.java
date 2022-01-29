@@ -4,6 +4,7 @@ import com.todo.dto.MemberRequest;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Persistable;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member extends BaseEntity {
+public class Member extends BaseEntity implements Persistable<String> {
 
     @Id
     @Column(name = "member_id")
@@ -25,6 +26,11 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private final List<Todo> todoList = new ArrayList<>();
+
+    @Override
+    public boolean isNew () {
+        return createDate == null;
+    }
 
     // Constructor Method
     public static Member createMember(MemberRequest request) {

@@ -4,6 +4,7 @@ import com.todo.dto.CommentRequest;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Persistable;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment extends BaseEntity {
+public class Comment extends BaseEntity implements Persistable<Long> {
 
     @Id
     @GeneratedValue
@@ -23,6 +24,16 @@ public class Comment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todo_seq")
     private Todo todo;
+
+    @Override
+    public Long getId () {
+        return null;
+    }
+
+    @Override
+    public boolean isNew () {
+        return createDate == null;
+    }
 
     // Constructor Method
     public static Comment createComment(CommentRequest request) {
@@ -42,7 +53,5 @@ public class Comment extends BaseEntity {
             this.content = request.getContent();
         }
     }
-
-
 
 }

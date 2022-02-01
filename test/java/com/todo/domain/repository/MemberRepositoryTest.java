@@ -2,16 +2,13 @@ package com.todo.domain.repository;
 
 import com.todo.domain.entity.Member;
 import com.todo.dto.MemberRequest;
-import org.assertj.core.api.Assertions;
-import org.junit.Before;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
@@ -33,8 +30,8 @@ class MemberRepositoryTest {
         Member member = Member.createMember(memberRequest);
 
         // when
-        memberRepository.insert(member);
-        Member findMember = memberRepository.findOne(member.getId());
+        memberRepository.save(member);
+        Member findMember = memberRepository.findById(member.getId()).get();
 
         // then
         assertThat(findMember).isEqualTo(member);

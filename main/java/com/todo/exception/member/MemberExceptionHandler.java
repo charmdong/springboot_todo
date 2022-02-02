@@ -1,6 +1,6 @@
-package com.todo.exception;
+package com.todo.exception.member;
 
-import com.todo.api.TodoApiController;
+import com.todo.api.MemberApiController;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -8,9 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(basePackageClasses = {TodoApiController.class})
+@RestControllerAdvice(basePackageClasses = {MemberApiController.class})
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class TodoExceptionHandler {
+public class MemberExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity exceptionHandler(Exception e) {

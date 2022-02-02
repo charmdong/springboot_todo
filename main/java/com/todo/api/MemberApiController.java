@@ -15,33 +15,35 @@ public class MemberApiController {
 
     private final MemberService memberService;
 
-    @GetMapping
-    public String hello (@RequestParam("param") String param) {
-
-        return "hello " + param;
-    }
-
     @PostMapping
     public ResponseEntity join (MemberRequest request) {
 
-        String id = memberService.insert( request );
+        String id = memberService.insert(request);
 
-        return new ResponseEntity( id, HttpStatus.OK );
+        return new ResponseEntity(id, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity findMember (@PathVariable("id") String id) {
 
-        MemberDto findMember = memberService.findOne( id );
+        MemberDto findMember = memberService.findOne(id);
 
-        return new ResponseEntity( findMember, HttpStatus.OK );
+        return new ResponseEntity(findMember, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity updateMember (@PathVariable("id") String id, MemberRequest request) {
+
+        MemberDto updateMember = memberService.update(id, request);
+
+        return new ResponseEntity(updateMember, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteMember (@PathVariable("id") String id) {
 
-        memberService.delete( id );
+        memberService.delete(id);
 
-        return new ResponseEntity( HttpStatus.OK );
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

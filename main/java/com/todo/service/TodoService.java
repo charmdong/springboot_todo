@@ -6,6 +6,10 @@ import com.todo.domain.repository.MemberRepository;
 import com.todo.domain.repository.TodoRepository;
 import com.todo.dto.TodoDto;
 import com.todo.dto.TodoRequest;
+import com.todo.exception.todo.DeleteTodoException;
+import com.todo.exception.todo.InsertTodoException;
+import com.todo.exception.todo.TodoNotFoundException;
+import com.todo.exception.todo.UpdateTodoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,12 +27,20 @@ public class TodoService {
 
     public Long insert (String id, TodoRequest request) {
 
-        Member member = memberRepository.findById( id ).get();
-        request.setMember( member );
-        Todo todo = Todo.createTodo( request );
-        member.insertTodoList( todo );
+        Member member = memberRepository.findById(id)
+                            .orElseThrow(() -> new InsertTodoException(
+                                    new TodoNotFoundException("사용자 정보가 존재하지 않습니다.")
+                            ));
+        request.setMember(member);
+        Todo todo = Todo.createTodo(request);
+        member.insertTodoList(todo);
 
-        todoRepository.save( todo );
+        try {
+            todoRepository.save(todo);
+        }
+        catch (IllegalArgumentException ie) {
+            throw new InsertTodoException(ie);
+        }
 
         return todo.getSeq();
     }
@@ -37,7 +49,7 @@ public class TodoService {
     public Page<TodoDto> findTodos (String id) {
 
         PageRequest request = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "seq"));
-        Page<Todo> page = todoRepository.findByMember(memberRepository.findById( id ).get(), request);
+        Page<Todo> page = todoRepository.findByMember(memberRepository.findById(id).get(), request);
         Page<TodoDto> todoDtoPage = page.map(TodoDto::new);
 
         return todoDtoPage;
@@ -46,23 +58,41 @@ public class TodoService {
     @Transactional(readOnly = true)
     public TodoDto findOne (Long seq) {
 
-        return new TodoDto( todoRepository.findBySeq( seq ) );
+        Todo todo = todoRepository
+                        .findBySeq(seq)
+                        .orElseThrow(() -> new TodoNotFoundException("Todo 정보가 존재하지 않습니다."));
+
+        return new TodoDto(todo);
     }
 
     public Todo update (Long seq, TodoRequest request) {
 
-        Todo todo = todoRepository.findBySeq( seq );
-        todo.changeTodoInfo( request );
+        Todo todo = todoRepository
+                .findBySeq(seq)
+                .orElseThrow(() -> new UpdateTodoException(
+                        new TodoNotFoundException("Todo 정보가 존재하지 않습니다.")
+                ));
+
+        todo.changeTodoInfo(request);
 
         return todo;
     }
 
     public void delete (String id, Long seq) {
 
-        Member member = memberRepository.findById( id ).get();
-        Todo todo = todoRepository.findBySeq( seq );
-        member.removeTodoList( todo );
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new InsertTodoException(
+                        new TodoNotFoundException("사용자 정보가 존재하지 않습니다.")
+                ));
 
-        todoRepository.deleteBySeq( seq );
+        Todo todo = todoRepository
+                .findBySeq(seq)
+                .orElseThrow(() -> new DeleteTodoException(
+                        new TodoNotFoundException("Todo 정보가 존재하지 않습니다.")
+                ));
+
+        member.removeTodoList(todo);
+
+        todoRepository.deleteBySeq(seq);
     }
 }

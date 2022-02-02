@@ -5,6 +5,7 @@ import com.todo.domain.repository.MemberRepository;
 import com.todo.dto.MemberDto;
 import com.todo.dto.MemberRequest;
 import com.todo.exception.member.DeleteMemberException;
+import com.todo.exception.member.InsertMemberException;
 import com.todo.exception.member.MemberNotFoundException;
 import com.todo.exception.member.UpdateMemberException;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,13 @@ public class MemberService {
     public String insert (MemberRequest request) {
 
         Member member = Member.createMember(request);
-        memberRepository.save(member);
+
+        try{
+            memberRepository.save(member);
+        }
+        catch (IllegalArgumentException ie) {
+            throw new InsertMemberException(ie);
+        }
 
         return member.getId();
     }
@@ -30,7 +37,9 @@ public class MemberService {
     @Transactional(readOnly = true)
     public MemberDto findOne (String id) {
 
-        Member member = memberRepository.findById(id).orElseThrow(MemberNotFoundException::new);
+        Member member = memberRepository
+                .findById(id)
+                .orElseThrow(() -> new MemberNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         return new MemberDto(member);
     }

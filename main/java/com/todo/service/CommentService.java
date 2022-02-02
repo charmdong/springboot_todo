@@ -6,6 +6,10 @@ import com.todo.domain.repository.CommentRepository;
 import com.todo.domain.repository.TodoRepository;
 import com.todo.dto.CommentDto;
 import com.todo.dto.CommentRequest;
+import com.todo.exception.comment.CommentNotFoundException;
+import com.todo.exception.comment.DeleteCommentException;
+import com.todo.exception.comment.InsertCommentException;
+import com.todo.exception.todo.TodoNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +24,20 @@ public class CommentService {
 
     public Long insert (Long todoSeq, CommentRequest request) {
 
-        Todo todo = todoRepository.findBySeq( todoSeq );
-        request.setTodo( todo );
-        Comment comment = Comment.createComment( request );
-        todo.insertCommentList( comment );
-        commentRepository.save( comment );
+        Todo todo = todoRepository.findBySeq(todoSeq)
+                        .orElseThrow(() -> new InsertCommentException(
+                                new CommentNotFoundException("댓글 정보가 존재하지 않습니다.")
+                        ));
+        request.setTodo(todo);
+        Comment comment = Comment.createComment(request);
+        todo.insertCommentList(comment);
+
+        try {
+            commentRepository.save(comment);
+        }
+        catch (IllegalArgumentException ie) {
+            throw new InsertCommentException(ie);
+        }
 
         return comment.getSeq();
     }
@@ -32,23 +45,36 @@ public class CommentService {
     @Transactional(readOnly = true)
     public CommentDto findOne (Long seq) {
 
-        return new CommentDto( commentRepository.findBySeq( seq ) );
+        Comment comment = commentRepository.findBySeq(seq)
+                .orElseThrow(() -> new CommentNotFoundException("댓글 정보가 존재하지 않습니다."));
+
+        return new CommentDto(comment);
     }
 
     public CommentDto update (Long commentSeq, CommentRequest request) {
 
-        Comment comment = commentRepository.findBySeq( commentSeq );
-        comment.changeCommentInfo( request );
+        Comment comment = commentRepository
+                .findBySeq(commentSeq)
+                .orElseThrow(() -> new CommentNotFoundException("댓글 정보가 존재하지 않습니다."));
+        comment.changeCommentInfo(request);
 
         return new CommentDto(comment);
     }
 
     public void delete (Long todoSeq, Long commentSeq) {
 
-        Todo todo = todoRepository.findBySeq( todoSeq );
-        Comment comment = commentRepository.findBySeq( commentSeq );
-        todo.removeCommentList( comment );
+        Todo todo = todoRepository
+                .findBySeq(todoSeq)
+                .orElseThrow(() -> new DeleteCommentException(
+                        new TodoNotFoundException("Todo 정보가 존재하지 않습니다.")
+                ));
 
-        commentRepository.deleteBySeq( commentSeq );
+        Comment comment = commentRepository
+                .findBySeq(commentSeq)
+                .orElseThrow(() -> new CommentNotFoundException("댓글 정보가 존재하지 않습니다."));
+
+        todo.removeCommentList(comment);
+
+        commentRepository.deleteBySeq(commentSeq);
     }
 }

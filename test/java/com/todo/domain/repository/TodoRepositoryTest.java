@@ -87,7 +87,7 @@ class TodoRepositoryTest {
         Todo todo = createTodo("member1");
 
         // when
-        Todo find = repository.findBySeq(todo.getSeq());
+        Todo find = repository.findBySeq(todo.getSeq()).get();
 
         // then
         assertThat(find.getContent()).isEqualTo("hello world");

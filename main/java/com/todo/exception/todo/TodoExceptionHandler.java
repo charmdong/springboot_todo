@@ -1,6 +1,7 @@
 package com.todo.exception.todo;
 
 import com.todo.api.TodoApiController;
+import com.todo.exception.comment.CommentException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -13,8 +14,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class TodoExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity exceptionHandler(Exception e) {
+    public ResponseEntity todoExceptionHandler(TodoException te) {
 
-        return new ResponseEntity(e.getMessage(), HttpStatus.OK);
+        return new ResponseEntity(te.getMessage(), HttpStatus.OK);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity commentExceptionHandler(CommentException ce) {
+
+        return new ResponseEntity(ce.getMessage(), HttpStatus.OK);
     }
 }

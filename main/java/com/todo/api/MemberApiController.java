@@ -20,7 +20,7 @@ public class MemberApiController {
 
         String id = memberService.insert(request);
 
-        return new ResponseEntity(id, HttpStatus.OK);
+        return new ResponseEntity(id, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

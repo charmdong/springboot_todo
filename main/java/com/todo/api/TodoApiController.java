@@ -41,7 +41,7 @@ public class TodoApiController {
 
         Long seq = todoService.insert(id, request);
 
-        return new ResponseEntity(seq, HttpStatus.OK);
+        return new ResponseEntity(seq, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{seq}")
@@ -65,7 +65,7 @@ public class TodoApiController {
 
         Long commentSeq = commentService.insert(seq, request);
 
-        return new ResponseEntity(commentSeq, HttpStatus.OK);
+        return new ResponseEntity(commentSeq, HttpStatus.CREATED);
     }
 
     @PatchMapping("/comments/{commentSeq}")

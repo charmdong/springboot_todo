@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class MemberExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity exceptionHandler(MemberException e) {
+    public ResponseEntity memberExHandler(MemberException me) {
 
-        return new ResponseEntity(e.getMessage(), HttpStatus.OK);
+        return new ResponseEntity(me.getMessage(), HttpStatus.OK);
     }
 }
